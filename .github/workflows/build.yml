@@ -1,0 +1,33 @@
+name: Build Unsigned IPA
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode 17
+        run: sudo xcode-select -s /Applications/Xcode_17.app
+
+      - name: Build Unsigned Archive
+        run: |
+          xcodebuild archive \
+            -scheme "TerminalOS" \
+            -sdk iphoneos \
+            -archivePath ./build/TerminalOS.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Create Unsigned IPA
+        run: |
+          mkdir -p Payload
+          cp -r ./build/TerminalOS.xcarchive/Products/Applications/*.app ./Payload/
+          zip -r TerminalOS-Unsigned.ipa Payload
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TerminalOS-IPA
+          path: TerminalOS-Unsigned.ipa
