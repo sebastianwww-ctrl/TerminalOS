@@ -1,35 +1,25 @@
-name: Build Unsigned IPA
+name: Build Unsigned IPA with xtool
 on: [push]
 
 jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Set up Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: 'latest-stable'
-
-      - name: Build Unsigned Archive
+      - name: Install xtool
         run: |
-          xcodebuild archive \
-            -scheme "TerminalOS" \
-            -sdk iphoneos \
-            -archivePath ./build/TerminalOS.xcarchive \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY=""
+          curl -fL "https://github.com" -o xtool
+          chmod +x xtool
+          sudo mv xtool /usr/local/bin/
 
-      - name: Create Unsigned IPA
+      - name: Build Unsigned IPA
         run: |
-          mkdir -p Payload
-          cp -r ./build/TerminalOS.xcarchive/Products/Applications/*.app ./Payload/
-          zip -r TerminalOS-Unsigned.ipa Payload
+          xtool build --platform ios --configuration Release
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TerminalOS-IPA
-          path: TerminalOS-Unsigned.ipa
+          path: build/ios/Release-iphoneos/*.ipa
