@@ -1,0 +1,13 @@
+name: TerminalOS
+type: application
+bundle_id: com.yourname.terminalos
+platform: ios
+deployment_target: 16.0
+sources:
+  - Main.swift
+info_plist:
+  CFBundleDisplayName: "TerminalOS"
+  CFBundleIdentifier: "com.yourname.terminalos"
+  CFBundleVersion: "1.0.0"
+  LSRequiresIPhoneOS: true
+  UILaunchStoryboardName: "LaunchScreen"
