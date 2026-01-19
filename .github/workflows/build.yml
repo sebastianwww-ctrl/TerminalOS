@@ -10,17 +10,21 @@ jobs:
 
       - name: Install xtool via Homebrew
         run: |
-          # 2026 standard for installing xtool on macOS runners
+          # The 2026 standard for installing xtool
           brew install xtool-org/tap/xtool
           xtool --version
 
       - name: Build Unsigned IPA
         run: |
-          # xtool builds using your Main.swift and xtool.yaml
-          xtool build --platform ios --configuration Release
+          # xtool 1.16.1 uses 'archive ios' instead of '--platform'
+          xtool archive ios --configuration Release
           
+          # 1.16.1 puts the IPA in a hidden folder; we move it to the upload folder
+          mkdir -p build/ios/Release-iphoneos/
+          cp .build/xtool/ios/archive/*.ipa build/ios/Release-iphoneos/TerminalOS.ipa
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TerminalOS-Unsigned-IPA
-          path: build/ios/Release-iphoneos/*.ipa
+          path: build/ios/Release-iphoneos/TerminalOS.ipa
