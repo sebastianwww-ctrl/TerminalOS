@@ -8,17 +8,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install xtool
+      - name: Install xtool via Homebrew
         run: |
-          # Downloading the specific compiled binary for macOS runners
-          curl -fL "https://github.com" -o xtool
-          chmod +x xtool
-          sudo mv xtool /usr/local/bin/
+          # 2026 standard for installing xtool on macOS runners
+          brew install xtool-org/tap/xtool
           xtool --version
 
       - name: Build Unsigned IPA
         run: |
-          # This command looks for your Main.swift and xtool.yaml
+          # xtool builds using your Main.swift and xtool.yaml
           xtool build --platform ios --configuration Release
           
       - name: Upload Artifact
