@@ -10,16 +10,19 @@ jobs:
 
       - name: Install xtool
         run: |
+          # Downloading the specific compiled binary for macOS runners
           curl -fL "https://github.com" -o xtool
           chmod +x xtool
           sudo mv xtool /usr/local/bin/
+          xtool --version
 
       - name: Build Unsigned IPA
         run: |
+          # This command looks for your Main.swift and xtool.yaml
           xtool build --platform ios --configuration Release
           
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TerminalOS-IPA
+          name: TerminalOS-Unsigned-IPA
           path: build/ios/Release-iphoneos/*.ipa
