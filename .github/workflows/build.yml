@@ -15,17 +15,17 @@ jobs:
 
       - name: Build for iOS
         run: |
-          # Clean old build cache to prevent 'Planning' errors
+          # Clean old build artifacts to prevent planning errors
           rm -rf .build
-          # 2026 standard: lowercase 'release'
+          # 2026 standard build command
           xtool dev build --triple arm64-apple-ios --configuration release
 
       - name: Package Manual IPA
         run: |
           mkdir -p Payload
-          # Search for the .app bundle in the 2026 build path
+          # Search for the .app bundle in the 2026 hidden build folder
           APP_PATH=$(find .build/xtool -name "TerminalOS.app" -type d | head -n 1)
-          if [ -z "$APP_PATH" ]; then echo "App bundle not found!"; exit 1; fi
+          if [ -z "$APP_PATH" ]; then echo "Build failed: App bundle not found!"; exit 1; fi
           cp -r "$APP_PATH" Payload/
           zip -r TerminalOS.ipa Payload
 
