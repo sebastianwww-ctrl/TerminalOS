@@ -7,8 +7,7 @@ let package = Package(
     products: [.executable(name: "TerminalOS", targets: ["TerminalOS"])],
     targets: [
         .executableTarget(
-            name: "TerminalOS",
-            path: "Sources/TerminalOS" // This must match the folder name
+            name: "TerminalOS" // xtool looks for Sources/TerminalOS by default
         )
     ]
 )
