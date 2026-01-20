@@ -15,15 +15,15 @@ jobs:
 
       - name: Build for iOS
         run: |
-          # xtool 1.16.1 builds for iOS using the 'dev build' command
-          # No Package.swift error because we added it above
+          # The 'dev build' command is the 2026 standard for SwiftPM apps
           xtool dev build --triple arm64-apple-ios
 
       - name: Package Manual IPA
         run: |
           mkdir -p Payload
-          # Locate the .app in the 2026 hidden build folder
-          APP_PATH=$(find .build/xtool -name "*.app" | head -n 1)
+          # In 2026, xtool outputs to .build/xtool/debug or .build/xtool/release
+          # We search specifically for the compiled .app bundle
+          APP_PATH=$(find .build/xtool -name "TerminalOS.app" -type d | head -n 1)
           cp -r "$APP_PATH" Payload/
           zip -r TerminalOS.ipa Payload
 
