@@ -1,4 +1,4 @@
 version: 1
 name: TerminalOS
-bundleID: com.sebastianwww.terminalos
+bundleID: com.sebastianwww-ctrl.terminalos
 deploymentTarget: "15.0"
