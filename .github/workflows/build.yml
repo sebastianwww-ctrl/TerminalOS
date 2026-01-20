@@ -14,11 +14,13 @@ jobs:
       - name: Build and Package
         run: |
           rm -rf .build
-          # 2026 syntax: xtool dev handles the planning and IPA conversion
+          # 2026 standard: xtool converts the library into an IPA 
+          # because xtool.yml says 'type: application'
           xtool dev build --triple arm64-apple-ios --configuration release --ipa
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TerminalOS-Unsigned-IPA
+          # xtool outputs the final IPA here
           path: build/TerminalOS.ipa
