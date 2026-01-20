@@ -2,3 +2,4 @@ version: 1
 name: TerminalOS
 bundleID: com.sebastianwww.terminalos
 deploymentTarget: "15.0"
+# In 2026, xtool automatically maps the 'executable' target to the iOS app
