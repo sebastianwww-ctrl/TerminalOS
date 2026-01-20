@@ -10,16 +10,16 @@ jobs:
 
       - name: Install xtool via Homebrew
         run: |
-          # 2026 standard installation
+          # 2026 standard for installing xtool on macOS runners
           brew install xtool-org/tap/xtool
           xtool --version
 
       - name: Build Unsigned IPA
         run: |
-          # Use archive command for version 1.16.1
-          xtool archive ios --configuration Release
+          # xtool 1.16.1 uses 'archive ios' as direct subcommands
+          xtool archive ios
           
-          # Create path and move the generated IPA to the artifact location
+          # Move the generated IPA to the artifact location for upload
           mkdir -p build/ios/Release-iphoneos/
           cp .build/xtool/ios/archive/*.ipa build/ios/Release-iphoneos/TerminalOS.ipa
 
