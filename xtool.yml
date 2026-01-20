@@ -1,6 +1,6 @@
 version: 1
 name: TerminalOS
+type: application
+product: TerminalOS
 bundleID: com.sebastianwww.terminalos
 deploymentTarget: "15.0"
-# 2026 FIX: Explicitly tell xtool which target is the iOS app
-product: TerminalOS
