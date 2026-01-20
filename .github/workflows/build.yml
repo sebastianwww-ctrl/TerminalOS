@@ -8,25 +8,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Verify Configuration
-        run: |
-          ls -R
-          if [ ! -f "xtool.yml" ]; then echo "Error: xtool.yml missing!"; exit 1; fi
-
       - name: Install xtool
-        run: brew install xtool-org/tap/xtool
+        run: |
+          brew install xtool-org/tap/xtool
+          xtool --version
 
       - name: Build for iOS
         run: |
-          # Use the target-based build command for 2026 SwiftPM projects
-          xtool dev build --triple arm64-apple-ios --target TerminalOS
+          # 2026 syntax: xtool automatically detects the target from Package.swift
+          xtool dev build --triple arm64-apple-ios --configuration Release
 
       - name: Package Manual IPA
         run: |
           mkdir -p Payload
-          # Search for the binary in the 2026 build path
+          # Search for the .app bundle in the 2026 release directory
           APP_PATH=$(find .build/xtool -name "TerminalOS.app" -type d | head -n 1)
-          if [ -z "$APP_PATH" ]; then echo "App bundle not found!"; exit 1; fi
+          if [ -z "$APP_PATH" ]; then echo "Build failed: App bundle not found!"; exit 1; fi
           cp -r "$APP_PATH" Payload/
           zip -r TerminalOS.ipa Payload
 
