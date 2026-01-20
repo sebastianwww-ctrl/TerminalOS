@@ -2,4 +2,3 @@ version: 1
 name: TerminalOS
 bundleID: com.sebastianwww.terminalos
 deploymentTarget: "15.0"
-# xtool will now look for both the library and executable products
