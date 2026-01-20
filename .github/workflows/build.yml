@@ -10,20 +10,21 @@ jobs:
 
       - name: Install xtool via Homebrew
         run: |
-          # The current 2026 standard for installing xtool
+          # 2026 standard for installing xtool on macOS runners
           brew install xtool-org/tap/xtool
           xtool --version
 
       - name: Build Unsigned App
         run: |
-          # 1.16.1 prefers 'build' for creating the local binary
-          xtool build --platform ios --configuration Release
-          
+          # xtool 1.16.1 uses 'dev build' with a target triple for iOS
+          # This creates a raw, unsigned binary
+          xtool dev build --triple arm64-apple-ios
+
       - name: Package Manual IPA
         run: |
-          # In 2026, we manually package the .app into an .ipa for SideStore
+          # Manually package the built .app into a .ipa for SideStore
           mkdir -p Payload
-          # Find the built .app in the xtool build directory
+          # Find the built .app in the xtool hidden build folder
           APP_PATH=$(find .build/xtool -name "*.app" | head -n 1)
           cp -r "$APP_PATH" Payload/
           zip -r TerminalOS.ipa Payload
