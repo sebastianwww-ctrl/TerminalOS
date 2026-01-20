@@ -5,7 +5,6 @@ let package = Package(
     name: "TerminalOS",
     platforms: [.iOS(.v15)],
     products: [
-        // xtool 2026 uses the executable product to generate the app bundle
         .executable(name: "TerminalOS", targets: ["TerminalOS"])
     ],
     targets: [
