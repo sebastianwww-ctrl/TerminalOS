@@ -5,11 +5,11 @@ let package = Package(
     name: "TerminalOS",
     platforms: [.iOS(.v15)],
     products: [
-        // We define it as a library so SPM is happy
+        // Satisfies xtool's "No library products" error
         .library(name: "TerminalOS", targets: ["TerminalOS"])
     ],
     targets: [
-        // We define it as a regular target (not executableTarget)
+        // Defined as 'target' to avoid executable conflicts
         .target(
             name: "TerminalOS",
             path: "Sources/TerminalOS"
