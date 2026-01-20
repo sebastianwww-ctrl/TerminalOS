@@ -33,8 +33,3 @@ jobs:
         with:
           name: TerminalOS-Unsigned-IPA
           path: TerminalOS.ipa
-
-        uses: actions/upload-artifact@v4
-        with:
-          name: TerminalOS-Unsigned-IPA
-          path: build/ios/Release-iphoneos/TerminalOS.ipa
