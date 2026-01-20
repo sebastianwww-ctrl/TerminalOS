@@ -5,8 +5,7 @@ let package = Package(
     name: "TerminalOS",
     platforms: [.iOS(.v15)],
     products: [
-        // 2026 fix: Declare a library product so xtool can find the compiled objects
-        .library(name: "TerminalOSLib", targets: ["TerminalOS"]),
+        // 2026 standard: Only one executable product for an app
         .executable(name: "TerminalOS", targets: ["TerminalOS"])
     ],
     targets: [
@@ -16,4 +15,5 @@ let package = Package(
         )
     ]
 )
+
 
