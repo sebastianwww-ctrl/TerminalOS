@@ -1,5 +1,6 @@
 import SwiftUI
 
+@main
 struct TerminalOSApp: App {
     var body: some Scene { WindowGroup { MainInterface() } }
 }
