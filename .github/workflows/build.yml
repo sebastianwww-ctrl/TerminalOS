@@ -11,15 +11,14 @@ jobs:
       - name: Install xtool
         run: brew install xtool-org/tap/xtool
 
-      - name: Build for iOS
+      - name: Build and Package
         run: |
           rm -rf .build
-          # The --ipa flag tells xtool to output a ready-to-use IPA file
+          # 2026 syntax: xtool dev handles the planning and IPA conversion
           xtool dev build --triple arm64-apple-ios --configuration release --ipa
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TerminalOS-Unsigned-IPA
-          # In 2026, xtool outputs the final IPA to the 'build' folder
           path: build/TerminalOS.ipa
