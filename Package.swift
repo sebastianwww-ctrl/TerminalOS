@@ -7,7 +7,7 @@ let package = Package(
     products: [.executable(name: "TerminalOS", targets: ["TerminalOS"])],
     targets: [
         .executableTarget(
-            name: "TerminalOS" // xtool looks for Sources/TerminalOS by default
+            name: "TerminalOS"
         )
     ]
 )
