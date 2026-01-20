@@ -15,13 +15,13 @@ jobs:
 
       - name: Build for iOS
         run: |
-          # 2026 syntax: xtool automatically detects the target from Package.swift
-          xtool dev build --triple arm64-apple-ios --configuration Release
+          # Fixed: lowercase 'release'
+          xtool dev build --triple arm64-apple-ios --configuration release
 
       - name: Package Manual IPA
         run: |
           mkdir -p Payload
-          # Search for the .app bundle in the 2026 release directory
+          # Search for the .app bundle in the release directory
           APP_PATH=$(find .build/xtool -name "TerminalOS.app" -type d | head -n 1)
           if [ -z "$APP_PATH" ]; then echo "Build failed: App bundle not found!"; exit 1; fi
           cp -r "$APP_PATH" Payload/
