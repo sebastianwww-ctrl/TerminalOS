@@ -14,8 +14,7 @@ jobs:
       - name: Build and Package
         run: |
           rm -rf .build
-          # xtool 2026 converts the library target into an IPA 
-          # using the settings in xtool.yml
+          # 2026 syntax: xtool converts the library target into an IPA
           xtool dev build --triple arm64-apple-ios --configuration release --ipa
 
       - name: Upload Artifact
