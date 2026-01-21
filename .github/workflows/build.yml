@@ -1,24 +1,60 @@
-name: Build Unsigned IPA with xtool
-on: [push]
+# File: .github/workflows/build-unsigned-ipa.yml
+name: Build Unsigned IPA
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      BUILD_SCHEME: TerminalOS               # Xcode scheme
+      PROJECT_NAME: TerminalOS               # Xcode project target
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install xtool
-        run: brew install xtool-org/tap/xtool
+    - name: Set up Xcode environment
+      run: |
+        sudo xcode-select -s /Applications/Xcode.app
+        xcodebuild -version
 
-      - name: Build and Package
-        run: |
-          rm -rf .build
-          # 2026 syntax: xtool builds the executable and wraps it in an IPA
-          xtool dev build --triple arm64-apple-ios --configuration release --ipa
+    - name: Resolve Swift packages
+      run: xcodebuild -resolvePackageDependencies -project ${PROJECT_NAME}.xcodeproj
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: TerminalOS-Unsigned-IPA
-          path: build/TerminalOS.ipa
+    - name: Build Archive (Unsigned / Fake Signing)
+      run: |
+        xcodebuild archive \
+          -project ${PROJECT_NAME}.xcodeproj \
+          -scheme $BUILD_SCHEME \
+          -archivePath build/${PROJECT_NAME}.xcarchive \
+          -derivedDataPath build/DerivedData \
+          CODE_SIGN_IDENTITY="" \
+          CODE_SIGNING_REQUIRED=NO \
+          ENABLE_BITCODE=NO
+
+    - name: Create Payload directory
+      run: mkdir -p Payload
+
+    - name: Copy App to Payload
+      run: cp -R build/${PROJECT_NAME}.xcarchive/Products/Applications/${PROJECT_NAME}.app Payload/${PROJECT_NAME}.app
+
+    - name: Fake Sign App (optional)
+      run: |
+        # Install ldid for fake signing if needed
+        brew install ldid || true
+        # Fake sign the main app for sideload testing
+        ldid -S Payload/${PROJECT_NAME}.app/${PROJECT_NAME}
+
+    - name: Create unsigned/fake-signed IPA
+      run: zip -r ./build/${PROJECT_NAME}.ipa Payload
+
+    - name: Upload IPA Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${PROJECT_NAME}.ipa
+        path: build/${PROJECT_NAME}.ipa
