@@ -1,0 +1,7 @@
+# Build products
+build/
+DerivedData/
+
+# Certificates and provisioning profiles
+*.p12
+*.mobileprovision
