@@ -1,7 +1,10 @@
-# Build products
+# Build artifacts
 build/
 DerivedData/
 
 # Certificates and provisioning profiles
 *.p12
 *.mobileprovision
+
+# Swift Package artifacts
+.swiftpm/
